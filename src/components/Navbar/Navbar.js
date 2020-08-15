@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Navbar.css';
 import { Link } from 'react-scroll';
 import { useForm } from 'react-hook-form';
@@ -8,6 +8,7 @@ import SearchBar from '../Welcomepage/SearchBar';
 import Signin from './Signin';
 import Signup from './Signup';
 import { Link as RouterLink } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 // import Avatar from '@material-ui/core/Avatar';
 // import Button from '@material-ui/core/Button';
@@ -50,6 +51,8 @@ function Navigationbar() {
   const [modalState, setModalState] = useState(false);
   const [modalSigninState, setSigninModalState] = useState(false);
   const [closeOrSearch, setcloseOrSearch] = useState(true);
+  let location = useLocation();
+
   // const { register, handleSubmit, errors, reset, clearErrors } = useForm();
   // const {
   //   register: registerSignin,
@@ -176,16 +179,24 @@ function Navigationbar() {
           <div>
             <ul class={'nav-links'} ref={listRef}>
               <li>
-                <Link
-                  onClick={() => pauseScrollSnap()}
-                  style={{ cursor: 'pointer' }}
-                  activeClass='active'
-                  to='trending'
-                  spy={true}
-                  smooth={true}
-                  duration={500}>
-                  Movies
-                </Link>
+                {location.pathname != '/' ? (
+                  <RouterLink
+                    to='/'
+                    style={{ color: '#FFF', textDecoration: 'none' }}>
+                    Movies
+                  </RouterLink>
+                ) : (
+                  <Link
+                    onClick={() => pauseScrollSnap()}
+                    style={{ cursor: 'pointer' }}
+                    activeClass='active'
+                    to='trending'
+                    spy={true}
+                    smooth={true}
+                    duration={500}>
+                    Movies
+                  </Link>
+                )}
               </li>
               <li>
                 <a

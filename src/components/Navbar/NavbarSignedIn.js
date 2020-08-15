@@ -7,6 +7,7 @@ import SearchBar from '../Welcomepage/SearchBar';
 import { Link as RouterLink } from 'react-router-dom';
 import fire from '../../config/fbConfig';
 import { Redirect } from 'react-router';
+import { useLocation } from 'react-router-dom';
 import { MdClose } from 'react-icons/md';
 
 function Navigationbar() {
@@ -17,6 +18,7 @@ function Navigationbar() {
   const [modalSigninState, setSigninModalState] = useState(false);
   const [isSignedIn, setIsSignedIn] = useState(true);
   const [closeOrSearch, setcloseOrSearch] = useState(true);
+  const location = useLocation();
 
   const pauseScrollSnap = () => {
     document.documentElement.style.scrollSnapType = 'none';
@@ -104,16 +106,24 @@ function Navigationbar() {
           <div>
             <ul class={'nav-links'} ref={listRef}>
               <li>
-                <Link
-                  onClick={() => pauseScrollSnap()}
-                  style={{ cursor: 'pointer' }}
-                  activeClass='active'
-                  to='trending'
-                  spy={true}
-                  smooth={true}
-                  duration={500}>
-                  Movies
-                </Link>
+                {location.pathname != '/' ? (
+                  <RouterLink
+                    to='/'
+                    style={{ color: '#FFF', textDecoration: 'none' }}>
+                    Movies
+                  </RouterLink>
+                ) : (
+                  <Link
+                    onClick={() => pauseScrollSnap()}
+                    style={{ cursor: 'pointer' }}
+                    activeClass='active'
+                    to='trending'
+                    spy={true}
+                    smooth={true}
+                    duration={500}>
+                    Movies
+                  </Link>
+                )}
               </li>
               <li>
                 <RouterLink to='/dashboard'>
