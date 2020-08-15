@@ -20,20 +20,36 @@ function SearchBar() {
       console.log(bottom, window.innerHeight);
       modalBg.current.style.top = `${position}px`;
       setScrollPosition(position);
+    } else {
+      window.scrollBy(0, -(window.innerHeight - bottom + 2));
+    }
+  };
+
+  const handleResize = () => {
+    const position = window.pageYOffset;
+    var bottom = document.getElementById('footer').getBoundingClientRect()
+      .bottom;
+    console.log(window.innerHeight);
+    if (bottom < window.innerHeight) {
+      window.scrollBy(0, -(window.innerHeight - bottom + 2));
+      setScrollPosition(window.innerHeight);
     }
   };
 
   useEffect(() => {
     if (modalState) {
       document.body.style.overflow = 'hidden';
+      modalBg.current.style.overflowY = 'scroll';
     } else {
       document.body.style.overflow = '';
     }
   }, [modalState]);
 
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll, { passive: true });
-
+    window.addEventListener('scroll', handleScroll, handleResize, {
+      passive: true,
+    });
+    window.addEventListener('resize', handleResize);
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
@@ -79,7 +95,12 @@ function SearchBar() {
         style={{ top: '0', height: '100%' }}
         className={`modalBackground2 modalShowing2-${modalState}`}>
         <div
-          style={{ height: '92%', transform: 'translate(0, 40px)' }}
+          style={{
+            height: '900px',
+            marginTop: '40px',
+            transform: 'translate(0, 0px)',
+            marginBottom: '20px',
+          }}
           className={'modalInner2'}>
           <MovieInfoPage ID={movieID} handleChange={handleMovieInfoToggle} />
         </div>

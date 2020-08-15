@@ -9,7 +9,7 @@ import 'slick-carousel/slick/slick-theme.css';
 import fire from '../../config/fbConfig';
 import Signin from '../Navbar/Signin';
 import Signup from '../Navbar/Signup';
-
+import Spinner from 'react-bootstrap/Spinner';
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -51,6 +51,7 @@ function MovieInfoPage({ ID, Release_date, handleChange }) {
   const tab3 = React.useRef();
   const addButton = React.useRef();
   const removeButton = React.useRef();
+  const spinnerRef = React.useRef();
 
   const handleWatched = (id, runtime) => {
     fire.auth().onAuthStateChanged(function (user) {

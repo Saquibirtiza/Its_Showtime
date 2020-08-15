@@ -21,10 +21,10 @@ function Navigationbar() {
   const location = useLocation();
 
   const pauseScrollSnap = () => {
-    document.documentElement.style.scrollSnapType = 'none';
-    setTimeout(function () {
-      document.documentElement.style.scrollSnapType = 'y mandatory';
-    }, 500);
+    // document.documentElement.style.scrollSnapType = 'none';
+    // setTimeout(function () {
+    //   document.documentElement.style.scrollSnapType = 'y mandatory';
+    // }, 500);
   };
 
   const toggleSearchBar = () => {
