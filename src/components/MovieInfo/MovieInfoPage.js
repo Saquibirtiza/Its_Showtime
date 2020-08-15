@@ -39,6 +39,8 @@ function MovieInfoPage({ ID, Release_date, handleChange }) {
   const [movieGenre, setGenre] = useState([]);
   const [existsInMylist, setExistsInMylist] = useState([]);
   const [completedToken, setCompletedToken] = useState(0);
+  const [castNum, setCastNum] = useState(1);
+  const [suggestedNum, setSuggestedNum] = useState(1);
   const [width, setWidth] = useState();
   const [signinToken, setSignin] = useState(false);
   const [modalState, setModalState] = useState(false);
@@ -374,6 +376,17 @@ function MovieInfoPage({ ID, Release_date, handleChange }) {
       )
         .then((response) => response.json())
         .then((res) => {
+          var count = 0;
+          res.cast.forEach((doc) => {
+            if (doc.profile_path) {
+              count = count + 1;
+            }
+          });
+          if (count == 0) {
+            setCastNum(0);
+          } else {
+            setCastNum(1);
+          }
           setCastDetails(res.cast);
         });
 
@@ -382,6 +395,15 @@ function MovieInfoPage({ ID, Release_date, handleChange }) {
       )
         .then((response) => response.json())
         .then((res) => {
+          var count2 = 0;
+          res.results.forEach((doc) => {
+            count2 = count2 + 1;
+          });
+          if (count2 == 0) {
+            setSuggestedNum(0);
+          } else {
+            setSuggestedNum(1);
+          }
           setRelatedMovies(res.results);
         });
     }
@@ -490,8 +512,18 @@ function MovieInfoPage({ ID, Release_date, handleChange }) {
             <div class='anotherstats'>Release Date</div>
           </div>
           <div style={{ display: 'flex' }}>
-            <div class='moviestats'>{movieDetails.runtime}</div>
-            <div class='moviestats'>{movieDetails.vote_average}</div>
+            {movieDetails.runtime == 0 ? (
+              <div class='moviestats'>N/A</div>
+            ) : (
+              <div class='moviestats'>{movieDetails.runtime} minutes</div>
+            )}
+
+            {movieDetails.vote_average == 0 ? (
+              <div class='moviestats'>N/A</div>
+            ) : (
+              <div class='moviestats'>{movieDetails.vote_average}</div>
+            )}
+
             {Release_date ? (
               <div class='anotherstats'>{Release_date}</div>
             ) : (
@@ -588,23 +620,30 @@ function MovieInfoPage({ ID, Release_date, handleChange }) {
         <h1 style={{ color: 'white', textAlign: 'left', marginLeft: '5vw' }}>
           Cast and Crew
         </h1>
-        <Slider {...settings}>
-          {castDetails.map((cast) => {
-            if (cast.profile_path) {
-              return (
-                <div>
-                  <img
-                    src={
-                      'https://image.tmdb.org/t/p/original/' + cast.profile_path
-                    }
-                    alt='Poster'></img>
-                  <h3 style={{ color: 'white' }}>{cast.name}</h3>
-                  <h3 style={{ color: 'grey' }}>as "{cast.character}"</h3>
-                </div>
-              );
-            }
-          })}
-        </Slider>
+        {castNum ? (
+          <Slider {...settings}>
+            {castDetails.map((cast) => {
+              if (cast.profile_path) {
+                return (
+                  <div>
+                    <img
+                      src={
+                        'https://image.tmdb.org/t/p/original/' +
+                        cast.profile_path
+                      }
+                      alt='Poster'></img>
+                    <h3 style={{ color: 'white' }}>{cast.name}</h3>
+                    <h3 style={{ color: 'grey' }}>as "{cast.character}"</h3>
+                  </div>
+                );
+              }
+            })}
+          </Slider>
+        ) : (
+          <h3 style={{ height: '100px', color: 'white' }}>
+            No Cast Data Available
+          </h3>
+        )}
       </div>
 
       {/* ---------------------------------------------------------------Similar Movie Tab--------------------------------------------------------------- */}
@@ -620,33 +659,39 @@ function MovieInfoPage({ ID, Release_date, handleChange }) {
         <h1 style={{ color: 'white', textAlign: 'left', marginLeft: '5vw' }}>
           Movies Similar To This
         </h1>
-        <Slider {...settings}>
-          {relatedMovies.map((related) => {
-            if (related.poster_path) {
-              return (
-                <div
-                  onClick={() => {
-                    ID = related.id;
-                    setMovieID(related.id);
-                  }}>
-                  <img
-                    src={
-                      'https://image.tmdb.org/t/p/original/' +
-                      related.poster_path
-                    }
-                    alt='Poster'></img>
-                  <h3 style={{ color: 'white' }}>{related.title}</h3>
-                  <h3 style={{ top: '325px' }} class='img__description'>
-                    Vote Count: {related.vote_count}
-                  </h3>
-                  <h3 class='img__description'>
-                    Rating: {related.vote_average}
-                  </h3>
-                </div>
-              );
-            }
-          })}
-        </Slider>
+        {suggestedNum ? (
+          <Slider {...settings}>
+            {relatedMovies.map((related) => {
+              if (related.poster_path) {
+                return (
+                  <div
+                    onClick={() => {
+                      ID = related.id;
+                      setMovieID(related.id);
+                    }}>
+                    <img
+                      src={
+                        'https://image.tmdb.org/t/p/original/' +
+                        related.poster_path
+                      }
+                      alt='Poster'></img>
+                    <h3 style={{ color: 'white' }}>{related.title}</h3>
+                    <h3 style={{ top: '325px' }} class='img__description'>
+                      Vote Count: {related.vote_count}
+                    </h3>
+                    <h3 class='img__description'>
+                      Rating: {related.vote_average}
+                    </h3>
+                  </div>
+                );
+              }
+            })}
+          </Slider>
+        ) : (
+          <h3 style={{ height: '100px', color: 'white' }}>
+            No Suggested Movies Available
+          </h3>
+        )}
       </div>
 
       <nav class='navposition'>

@@ -85,7 +85,6 @@ function SearchBar({ handleExit }) {
           to='/result'
           onClick={() => {
             if (handleExit) handleExit();
-            // handleExit();
             console.log(localStorage.getItem('searchVal'));
           }}>
           <a
@@ -121,6 +120,7 @@ function SearchBar({ handleExit }) {
               marginLeft: '10px',
               textAlign: 'left',
               justifyContent: 'flex-start',
+              cursor: 'pointer',
             }}>
             {movie.original_title}
           </div>

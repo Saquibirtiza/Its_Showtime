@@ -9,12 +9,18 @@ import MovieInfoPage from '../MovieInfo/MovieInfoPage';
 // import { Link as LinkRouter } from 'react-router-dom';
 import TextField from '@material-ui/core/TextField';
 import image from '../../ss.png';
+import { MdSearch } from 'react-icons/md';
+import { Link as RouterLink } from 'react-router-dom';
 
 function Welcomepage() {
   const [modalState, setModalState] = useState(false);
   const [movieID, setMovieID] = useState(false);
   const [movieReleaseDate, setMovieReleaseDate] = useState(false);
   const [width, setWidth] = useState();
+  const bgRef = React.useRef();
+  const [movies, setMovies, upcomingMovies, setUpcomingMovies] = useContext(
+    MovieContext
+  );
 
   useEffect(() => {
     setWidth(window.innerWidth);
@@ -87,11 +93,6 @@ function Welcomepage() {
     };
   }
 
-  const bgRef = React.useRef();
-  const [movies, setMovies, upcomingMovies, setUpcomingMovies] = useContext(
-    MovieContext
-  );
-
   const changeBackground = (prop) => {
     // console.log(infoRef.current);
     bgRef.current.style.backgroundImage =
@@ -102,6 +103,10 @@ function Welcomepage() {
 
     bgRef.current.classList.add('backdrop');
     bgRef.current.classList.add('backdrop::before');
+  };
+
+  const handleTextFieldChange = (e) => {
+    localStorage.setItem('searchVal', e.target.value);
   };
 
   return (
@@ -121,22 +126,27 @@ function Welcomepage() {
           minHeight: '800px',
         }}>
         <div class='set'>
-          {/* <div style={{ flex: '1', position: 'relative' }}> */}
-          {/* <img class='imageprop' src={logo} alt='background' /> */}
-          {/* </div> */}
-          {/* <div
-          // style={{ flex: '1' }}
-          > */}
           <div class='textprop'>Welcome</div>
-          {/* <Auto popular={movies} /> */}
           <TextField
             style={{ width: '100%' }}
             id='filled-basic'
             label='Search for your favorite show'
             variant='standard'
             fullwidth
+            onChange={handleTextFieldChange}
           />
-          {/* </div> */}
+          <RouterLink to='/result'>
+            <a
+              style={{
+                position: 'absolute',
+                cursor: 'pointer',
+                fontSize: '35px',
+                // right: '13%',
+                textDecoration: 'none',
+              }}>
+              <MdSearch style={{ marginTop: '8px' }} />
+            </a>
+          </RouterLink>
         </div>
         <div class='scrollprop'>
           <Link

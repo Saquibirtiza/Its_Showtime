@@ -7,6 +7,7 @@ function SearchBar() {
   const [modalState, setModalState] = useState(false);
   const [movieID, setMovieID] = useState(false);
   const [movie, setMovie] = React.useState([]);
+  const [seachResult, setSeachResult] = React.useState(1);
   const [scrollPosition, setScrollPosition] = useState(0);
   const modalBg = React.useRef();
 
@@ -50,7 +51,15 @@ function SearchBar() {
       .then((response) => response.json())
       .then((res) => {
         setMovie(res.results);
-        // console.log(res.results);
+        var count = 0;
+        res.results.forEach((doc) => {
+          count = count + 1;
+        });
+        if (count == 0) {
+          setSeachResult(0);
+        } else {
+          setSeachResult(1);
+        }
       });
   }, [localStorage.getItem('searchVal')]);
 
@@ -77,33 +86,37 @@ function SearchBar() {
       </div>
       <div class='contain overall2'>
         <div style={{ paddingBottom: '200px' }}>
-          <h2 style={{ textAlign: 'left', padding: '50px' }}>Search Results</h2>
-          <div class='grid-row'>
-            {movie.map((movie) => (
-              <div
-                class='grid-item'
-                onClick={() => {
-                  toggleModalState(movie);
-                  handleScroll();
-                }}>
-                <img
-                  class='img-style'
-                  src={
-                    'https://image.tmdb.org/t/p/original/' + movie.poster_path
-                  }
-                  onError={(e) => {
-                    e.target.onerror = null;
-                    e.target.src = image;
-                  }}
-                  alt='Poster'></img>
-                <h3 style={{ top: '325px' }} class='img__description'>
-                  Vote Count: {movie.vote_count}
-                </h3>
-                <h3 class='img__description'>Rating: {movie.vote_average}</h3>
-                <h3>{movie.original_title}</h3>
-              </div>
-            ))}
-          </div>
+          <h1 style={{ textAlign: 'left', padding: '50px' }}>Search Results</h1>
+          {seachResult ? (
+            <div class='grid-row'>
+              {movie.map((movie) => (
+                <div
+                  class='grid-item'
+                  onClick={() => {
+                    toggleModalState(movie);
+                    handleScroll();
+                  }}>
+                  <img
+                    class='img-style'
+                    src={
+                      'https://image.tmdb.org/t/p/original/' + movie.poster_path
+                    }
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = image;
+                    }}
+                    alt='Poster'></img>
+                  <h3 style={{ top: '325px' }} class='img__description'>
+                    Vote Count: {movie.vote_count}
+                  </h3>
+                  <h3 class='img__description'>Rating: {movie.vote_average}</h3>
+                  <h3>{movie.original_title}</h3>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <h2 style={{ height: '100px' }}>No Results Found</h2>
+          )}
         </div>
         <div
           id='footer'
