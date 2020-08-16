@@ -2,7 +2,7 @@
   "name": "its-showtime-frontend",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://Saquibirtiza.github.io/Its_Showtime",
+  "homepage": "https://saquibirtiza.github.io/Its_Showtime/",
   "dependencies": {
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
