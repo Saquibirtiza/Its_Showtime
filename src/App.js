@@ -6,6 +6,7 @@ import Welcomepage from './components/Welcomepage/Welcomepage';
 import { MovieProvider } from './components/Movielist/MovieListContext';
 import Result from './components/SearchResult/SearchResult';
 import DashBoard from './components/DashBoard/DashBoard';
+import LoadingScreen from './components/Loadingscreen/LoadingScreen';
 import fire from './config/fbConfig';
 import {
   BrowserRouter as Router,
@@ -87,6 +88,16 @@ function App() {
                           <Navbar />
                         )}
                         <DashBoard />
+                      </MovieProvider>
+                    );
+                  }}
+                />
+                <Route
+                  path='/loading'
+                  render={(props) => {
+                    return (
+                      <MovieProvider>
+                        <LoadingScreen />
                       </MovieProvider>
                     );
                   }}

@@ -63,19 +63,15 @@ function Navigationbar() {
   // } = useForm();
 
   const toggleModalState = () => {
-    if (document.body.style.overflow) {
-      document.body.style.overflow = '';
-    } else {
-      document.body.style.overflow = 'hidden';
+    if (window.innerWidth > 768) {
+      if (document.body.style.overflow) {
+        document.body.style.overflow = '';
+      } else {
+        document.body.style.overflow = 'hidden';
+      }
     }
-    setModalState(!modalState);
-  };
 
-  const pauseScrollSnap = () => {
-    // document.documentElement.style.scrollSnapType = 'none';
-    // setTimeout(function () {
-    //   document.documentElement.style.scrollSnapType = 'y mandatory';
-    // }, 500);
+    setModalState(!modalState);
   };
 
   const toggleSearchBar = () => {
@@ -88,10 +84,12 @@ function Navigationbar() {
   };
 
   const toggleSigninModalState = () => {
-    if (document.body.style.overflow) {
-      document.body.style.overflow = '';
-    } else {
-      document.body.style.overflow = 'hidden';
+    if (window.innerWidth > 768) {
+      if (document.body.style.overflow) {
+        document.body.style.overflow = '';
+      } else {
+        document.body.style.overflow = 'hidden';
+      }
     }
     setSigninModalState(!modalSigninState);
   };
@@ -187,8 +185,12 @@ function Navigationbar() {
                   </RouterLink>
                 ) : (
                   <Link
-                    onClick={() => pauseScrollSnap()}
                     style={{ cursor: 'pointer' }}
+                    onClick={() => {
+                      if (window.innerWidth <= 768) {
+                        toggleClass();
+                      }
+                    }}
                     activeClass='active'
                     to='trending'
                     spy={true}

@@ -20,13 +20,6 @@ function Navigationbar() {
   const [closeOrSearch, setcloseOrSearch] = useState(true);
   const location = useLocation();
 
-  const pauseScrollSnap = () => {
-    // document.documentElement.style.scrollSnapType = 'none';
-    // setTimeout(function () {
-    //   document.documentElement.style.scrollSnapType = 'y mandatory';
-    // }, 500);
-  };
-
   const toggleSearchBar = () => {
     setcloseOrSearch(!closeOrSearch);
     if (searchBarRef.current.style.opacity == 1) {
@@ -114,7 +107,11 @@ function Navigationbar() {
                   </RouterLink>
                 ) : (
                   <Link
-                    onClick={() => pauseScrollSnap()}
+                    onClick={() => {
+                      if (window.innerWidth <= 768) {
+                        toggleClass();
+                      }
+                    }}
                     style={{ cursor: 'pointer' }}
                     activeClass='active'
                     to='trending'
@@ -136,6 +133,7 @@ function Navigationbar() {
                   onClick={(event) => {
                     fire.auth().signOut();
                     localStorage.setItem('loggedIn', 0);
+                    localStorage.setItem('searchVal', '');
                   }}>
                   <a style={{ cursor: 'pointer' }}>Signout</a>
                 </RouterLink>

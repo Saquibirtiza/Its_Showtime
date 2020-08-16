@@ -141,6 +141,7 @@ function Signup({ handleExit, handleSwitch }) {
                   autoComplete='current-password'
                   inputRef={register({
                     required: 'Please Fill Up The Required Fields',
+                    minLength: { value: 6, message: 'Password is too short' },
                   })}
                 />
               </Grid>

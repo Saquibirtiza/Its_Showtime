@@ -3,6 +3,8 @@ import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import { MdSearch } from 'react-icons/md';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
+import { MuiThemeProvider } from '@material-ui/core';
+import { createMuiTheme } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -74,7 +76,7 @@ function SearchBar({ handleExit }) {
           }}
           style={{ width: '80%' }}
           id='filled-basic'
-          // label='What movie are you looking for'
+          placeholder='What movie are you looking for?'
           variant='filled'
           fullwidth
           autoFocus

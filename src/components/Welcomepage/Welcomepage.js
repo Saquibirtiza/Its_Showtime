@@ -11,6 +11,8 @@ import TextField from '@material-ui/core/TextField';
 import image from '../../ss.png';
 import { MdSearch, MdSignalWifi1BarLock } from 'react-icons/md';
 import { Link as RouterLink } from 'react-router-dom';
+import { MuiThemeProvider } from '@material-ui/core';
+import { createMuiTheme } from '@material-ui/core/styles';
 
 function Welcomepage() {
   const [modalState, setModalState] = useState(false);
@@ -164,14 +166,23 @@ function Welcomepage() {
       <div class='pageDev'>
         <div class='set'>
           <div class='textprop'>Welcome</div>
+
           <TextField
             style={{ width: '100%' }}
+            InputLabelProps={{
+              style: {
+                fontFamily: '"Poppins", sans-serif',
+                fontWeight: 'bold',
+                color: 'black',
+              },
+            }}
             id='filled-basic'
             label='Search for your favorite show'
             variant='standard'
             fullwidth
             onChange={handleTextFieldChange}
           />
+
           <RouterLink to='/result'>
             <a class='searchButton'>
               <MdSearch style={{ marginTop: '8px' }} />

@@ -35,6 +35,7 @@ const useStyles = makeStyles((theme) => ({
 
 function Signin({ handleExit, handleSwitch }) {
   const classes = useStyles();
+  const errorMsg = React.useRef();
   const { register, handleSubmit, errors, reset, clearErrors } = useForm();
   const {
     register: registerSignin,
@@ -53,9 +54,16 @@ function Signin({ handleExit, handleSwitch }) {
         handleExit();
         localStorage.setItem('loggedIn', 1);
         document.body.style.overflow = '';
+
         console.log('Signin success');
       })
       .catch((error) => {
+        errorMsg.current.style.opacity = 1;
+        errorMsg.current.style.position = 'static';
+        setTimeout(function () {
+          errorMsg.current.style.opacity = 0;
+          errorMsg.current.style.position = 'absolute';
+        }, 2000);
         console.log(error);
       });
     e.target.reset();
@@ -79,12 +87,17 @@ function Signin({ handleExit, handleSwitch }) {
           <Typography component='h1' variant='h5'>
             Sign in
           </Typography>
+          <h3
+            ref={errorMsg}
+            style={{ opacity: 0, padding: '10px', position: 'absolute' }}>
+            Incorrect Email and Password
+          </h3>
           <form
             className={classes.form}
             noValidate
             onSubmit={handleSubmitSignin(onSubmit)}>
             {errorsSignin.password && (
-              <div style={{ padding: '25px' }}>
+              <div style={{ padding: '25px', color: 'black' }}>
                 <h3>{errorsSignin.password.message}</h3>
               </div>
             )}
@@ -114,6 +127,7 @@ function Signin({ handleExit, handleSwitch }) {
               autoComplete='current-password'
               inputRef={registerSignin({
                 required: 'Please Fill Up The Required Fields',
+                minLength: { value: 6, message: 'Password is too short' },
               })}
             />
             <div style={{ display: 'flex', justifyContent: 'row' }}>

@@ -220,6 +220,10 @@ function MovieInfoPage({ ID, Release_date, handleChange }) {
     setWidth(window.innerWidth);
   });
 
+  useEffect(() => {
+    switchTab();
+  }, [width]);
+
   let settings = {};
   if (width < 850) {
     settings = {
@@ -270,24 +274,6 @@ function MovieInfoPage({ ID, Release_date, handleChange }) {
       movieDetails.backdrop_path +
       ')';
 
-    if (no === 1) {
-      if (movieDetails.backdrop_path) {
-        bgRef.current.style.backgroundImage =
-          'linear-gradient(to right, black 25%, transparent), ' + path;
-      } else {
-        bgRef.current.style.backgroundImage = '';
-        bgRef.current.classList.remove('default2');
-        bgRef.current.classList.remove('default3');
-        bgRef.current.classList.add('default1');
-      }
-
-      tab1.current.style.opacity = 1;
-      tab1.current.style.zIndex = 8;
-      tab2.current.style.opacity = 0;
-      tab2.current.style.zIndex = 3;
-      tab3.current.style.opacity = 0;
-      tab3.current.style.zIndex = 3;
-    }
     if (no === 2) {
       if (movieDetails.backdrop_path) {
         bgRef.current.style.backgroundImage =
@@ -304,8 +290,7 @@ function MovieInfoPage({ ID, Release_date, handleChange }) {
       tab2.current.style.zIndex = 8;
       tab3.current.style.opacity = 0;
       tab3.current.style.zIndex = 3;
-    }
-    if (no === 3) {
+    } else if (no === 3) {
       if (movieDetails.backdrop_path) {
         bgRef.current.style.backgroundImage =
           'linear-gradient(to top, black 15%, transparent), ' + path;
@@ -321,6 +306,26 @@ function MovieInfoPage({ ID, Release_date, handleChange }) {
       tab2.current.style.zIndex = 3;
       tab3.current.style.opacity = 1;
       tab3.current.style.zIndex = 8;
+    } else {
+      if (movieDetails.backdrop_path && width <= 1184) {
+        bgRef.current.style.backgroundImage =
+          'linear-gradient(to top, black 30%, transparent), ' + path;
+      } else if (movieDetails.backdrop_path && width > 1184) {
+        bgRef.current.style.backgroundImage =
+          'linear-gradient(to right, black 25%, transparent), ' + path;
+      } else {
+        bgRef.current.style.backgroundImage = '';
+        bgRef.current.classList.remove('default2');
+        bgRef.current.classList.remove('default3');
+        bgRef.current.classList.add('default1');
+      }
+
+      tab1.current.style.opacity = 1;
+      tab1.current.style.zIndex = 8;
+      tab2.current.style.opacity = 0;
+      tab2.current.style.zIndex = 3;
+      tab3.current.style.opacity = 0;
+      tab3.current.style.zIndex = 3;
     }
   };
 
@@ -494,120 +499,117 @@ function MovieInfoPage({ ID, Release_date, handleChange }) {
         </div>
       ) : null}
       {/* ---------------------------------------------------------------Overview Tab--------------------------------------------------------------- */}
-      <div
-        ref={tab1}
-        style={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          height: '100%',
-          position: 'absolute',
-          left: '0',
-          right: '0',
-        }}>
-        <div class='leftsection'>
-          <div class='title'>{movieDetails.title}</div>
-          <div class='genrestyle'>{movieGenre}</div>
-          <div class='overview'>{movieDetails.overview}</div>
-          <div style={{ display: 'flex', textDecoration: 'underline' }}>
-            <div class='anotherstats'>Runtime</div>
-            <div class='moviestats'>Rating</div>
-            <div class='anotherstats'>Release Date</div>
-          </div>
-          <div style={{ display: 'flex' }}>
-            {movieDetails.runtime == 0 ? (
-              <div class='anotherstats'>N/A</div>
-            ) : (
-              <div class='anotherstats'>{movieDetails.runtime} minutes</div>
-            )}
-
-            {movieDetails.vote_average == 0 ? (
-              <div class='moviestats'>N/A</div>
-            ) : (
-              <div class='moviestats'>{movieDetails.vote_average}</div>
-            )}
-
-            {Release_date ? (
-              <div class='anotherstats'>{Release_date}</div>
-            ) : (
-              <div class='anotherstats'>{movieDetails.release_date}</div>
-            )}
-          </div>
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-            }}>
-            <div style={{ flex: '1' }}>
-              {existsInMylist == 0 ? (
-                <Button
-                  ref={addButton}
-                  onClick={() =>
-                    handleSubmit(
-                      movieDetails.id,
-                      movieDetails.title,
-                      movieDetails.vote_average,
-                      movieDetails.vote_count,
-                      movieDetails.poster_path,
-                      movieDetails.release_date
-                    )
-                  }
-                  // style={{ flex: '1' }}
-                  type='button'
-                  variant='contained'
-                  color='primary'
-                  className={classes.submit}>
-                  Add to Mylist
-                </Button>
+      <div ref={tab1} class='modal'>
+        <div class='info'>
+          <div class='leftsection'>
+            <div class='title'>{movieDetails.title}</div>
+            <div class='genrestyle'>{movieGenre}</div>
+            <div class='overview'>{movieDetails.overview}</div>
+            <div style={{ display: 'flex', textDecoration: 'underline' }}>
+              <div class='anotherstats'>Runtime</div>
+              <div class='moviestats'>Rating</div>
+              <div class='anotherstats'>Release Date</div>
+            </div>
+            <div style={{ display: 'flex' }}>
+              {movieDetails.runtime == 0 ? (
+                <div class='anotherstats'>N/A</div>
               ) : (
-                <Button
-                  onClick={() => removeMylist(movieDetails.id)}
-                  ref={removeButton}
-                  // style={{ flex: '1' }}
-                  type='button'
-                  variant='contained'
-                  color='primary'
-                  className={classes.submit}>
-                  Remove From Mylist
-                </Button>
+                <div class='anotherstats'>{movieDetails.runtime} minutes</div>
+              )}
+
+              {movieDetails.vote_average == 0 ? (
+                <div class='moviestats'>N/A</div>
+              ) : (
+                <div class='moviestats'>{movieDetails.vote_average}</div>
+              )}
+
+              {Release_date ? (
+                <div class='anotherstats'>{Release_date}</div>
+              ) : (
+                <div class='anotherstats'>{movieDetails.release_date}</div>
               )}
             </div>
-            <div style={{ flex: '1' }}>
-              {completedToken ? (
-                <Button
-                  ref={addButton}
-                  onClick={() => removeWatched(movieDetails.id)}
-                  type='button'
-                  variant='contained'
-                  color='primary'
-                  className={classes.submit}>
-                  Mark as UnWatched
-                </Button>
-              ) : (
-                <Button
-                  onClick={(e) => {
-                    var currdate = new Date();
-                    var otherdate = new Date(movieDetails.release_date);
-                    if (currdate < otherdate) {
-                      console.log(currdate, otherdate);
-                      alert('This Movie Hasnt Been Released Yet');
-                    } else {
-                      handleWatched(movieDetails.id, movieDetails.runtime);
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                flexWrap: 'wrap',
+              }}>
+              <div style={{ flex: '1', minWidth: '200px' }}>
+                {existsInMylist == 0 ? (
+                  <Button
+                    ref={addButton}
+                    onClick={() =>
+                      handleSubmit(
+                        movieDetails.id,
+                        movieDetails.title,
+                        movieDetails.vote_average,
+                        movieDetails.vote_count,
+                        movieDetails.poster_path,
+                        movieDetails.release_date
+                      )
                     }
-                  }}
-                  ref={removeButton}
-                  // disabled
-                  type='button'
-                  variant='contained'
-                  color='primary'
-                  className={classes.submit}>
-                  Mark as Watched
-                </Button>
-              )}
+                    // style={{ flex: '1' }}
+                    type='button'
+                    variant='contained'
+                    color='primary'
+                    className={classes.submit}>
+                    Add to Mylist
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={() => removeMylist(movieDetails.id)}
+                    ref={removeButton}
+                    // style={{ flex: '1' }}
+                    type='button'
+                    variant='contained'
+                    color='primary'
+                    className={classes.submit}>
+                    Remove From Mylist
+                  </Button>
+                )}
+              </div>
+              <div style={{ flex: '1', minWidth: '200px' }}>
+                {completedToken ? (
+                  <Button
+                    ref={addButton}
+                    onClick={() => removeWatched(movieDetails.id)}
+                    type='button'
+                    variant='contained'
+                    color='primary'
+                    className={classes.submit}>
+                    Mark as UnWatched
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={(e) => {
+                      var currdate = new Date();
+                      if (Release_date) var otherdate = new Date(Release_date);
+                      else var otherdate = new Date(movieDetails.release_date);
+                      if (currdate < otherdate) {
+                        console.log(currdate, otherdate);
+                        alert(
+                          'This Movie Hasnt Been Released In Your Area Yet'
+                        );
+                      } else {
+                        handleWatched(movieDetails.id, movieDetails.runtime);
+                      }
+                    }}
+                    ref={removeButton}
+                    // disabled
+                    type='button'
+                    variant='contained'
+                    color='primary'
+                    className={classes.submit}>
+                    Mark as Watched
+                  </Button>
+                )}
+              </div>
             </div>
           </div>
         </div>
 
-        <div style={{ flex: '2', minWidth: '500px' }}></div>
+        <div class='blank'></div>
       </div>
       {/* ---------------------------------------------------------------Cast Tab--------------------------------------------------------------- */}
       <div
@@ -699,18 +701,24 @@ function MovieInfoPage({ ID, Release_date, handleChange }) {
       <nav class='navposition'>
         <ul class={'nav-links2'}>
           <li>
-            <a style={{ cursor: 'pointer' }} onClick={() => switchTab(1)}>
+            <a
+              style={{ cursor: 'pointer', padding: '2px' }}
+              onClick={() => switchTab(1)}>
               Overview
             </a>
           </li>
           <li>
-            <a style={{ cursor: 'pointer' }} onClick={() => switchTab(2)}>
+            <a
+              style={{ cursor: 'pointer', color: 'yellow', padding: '2px' }}
+              onClick={() => switchTab(2)}>
               Cast
             </a>
           </li>
           <li>
-            <a style={{ cursor: 'pointer' }} onClick={() => switchTab(3)}>
-              Related movies
+            <a
+              style={{ cursor: 'pointer', padding: '2px' }}
+              onClick={() => switchTab(3)}>
+              Suggestions
             </a>
           </li>
         </ul>

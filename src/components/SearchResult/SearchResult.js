@@ -7,7 +7,7 @@ function SearchBar() {
   const [modalState, setModalState] = useState(false);
   const [movieID, setMovieID] = useState(false);
   const [movie, setMovie] = React.useState([]);
-  const [seachResult, setSeachResult] = React.useState(1);
+  const [seachResult, setSeachResult] = React.useState(0);
   const [scrollPosition, setScrollPosition] = useState(0);
   const modalBg = React.useRef();
 
@@ -68,9 +68,12 @@ function SearchBar() {
       .then((res) => {
         setMovie(res.results);
         var count = 0;
-        res.results.forEach((doc) => {
-          count = count + 1;
-        });
+        if (res.results != undefined) {
+          res.results.forEach((doc) => {
+            count = count + 1;
+          });
+        }
+
         if (count == 0) {
           setSeachResult(0);
         } else {
@@ -86,6 +89,9 @@ function SearchBar() {
 
   const handleMovieInfoToggle = () => {
     setModalState(!modalState);
+    setTimeout(function () {
+      handleResize();
+    }, 200);
   };
 
   return (
