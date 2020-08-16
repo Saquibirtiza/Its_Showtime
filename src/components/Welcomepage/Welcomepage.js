@@ -9,7 +9,7 @@ import MovieInfoPage from '../MovieInfo/MovieInfoPage';
 // import { Link as LinkRouter } from 'react-router-dom';
 import TextField from '@material-ui/core/TextField';
 import image from '../../ss.png';
-import { MdSearch } from 'react-icons/md';
+import { MdSearch, MdSignalWifi1BarLock } from 'react-icons/md';
 import { Link as RouterLink } from 'react-router-dom';
 
 function Welcomepage() {
@@ -18,9 +18,11 @@ function Welcomepage() {
   const [movieReleaseDate, setMovieReleaseDate] = useState(false);
   const [width, setWidth] = useState();
   const bgRef = React.useRef();
+  const modalBg = React.useRef();
   const [movies, setMovies, upcomingMovies, setUpcomingMovies] = useContext(
     MovieContext
   );
+  const [scrollPosition, setScrollPosition] = useState(0);
 
   useEffect(() => {
     setWidth(window.innerWidth);
@@ -33,26 +35,18 @@ function Welcomepage() {
     setModalState(!modalState);
   };
 
-  const pauseScrollSnap = () => {
-    // document.documentElement.style.scrollSnapType = 'none';
-    // setTimeout(function () {
-    //   document.documentElement.style.scrollSnapType = 'y mandatory';
-    // }, 500);
-  };
+  // const pauseScrollSnap = () => {
+  //   document.documentElement.style.scrollSnapType = 'none';
+  //   setTimeout(function () {
+  //     document.documentElement.style.scrollSnapType = 'y mandatory';
+  //   }, 500);
+  // };
 
   const toggleModalState = (movie) => {
     setMovieID(movie.id);
     setMovieReleaseDate(movie.release_date);
     setModalState(!modalState);
   };
-
-  useEffect(() => {
-    if (modalState) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-  }, [modalState]);
 
   let settings = {};
   if (width < 850) {
@@ -109,9 +103,56 @@ function Welcomepage() {
     localStorage.setItem('searchVal', e.target.value);
   };
 
+  const handleScroll = () => {
+    const position = window.pageYOffset;
+    var bottom = document.getElementById('footer').getBoundingClientRect()
+      .bottom;
+
+    if (bottom > window.innerHeight) {
+      console.log(bottom, window.innerHeight);
+      modalBg.current.style.top = `${position}px`;
+      setScrollPosition(position);
+    } else {
+      window.scrollBy(0, -(window.innerHeight - bottom + 2));
+    }
+  };
+
+  const handleResize = () => {
+    const position = window.pageYOffset;
+    var bottom = document.getElementById('footer').getBoundingClientRect()
+      .bottom;
+    console.log(window.innerHeight);
+    if (bottom < window.innerHeight) {
+      window.scrollBy(0, -(window.innerHeight - bottom + 2));
+      setScrollPosition(window.innerHeight);
+    }
+  };
+
+  useEffect(() => {
+    console.log(window.innerHeight);
+    if (modalState) {
+      document.body.style.overflow = 'hidden';
+      modalBg.current.style.overflowY = 'scroll';
+    } else {
+      document.body.style.overflow = '';
+    }
+  }, [modalState]);
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll, handleResize, {
+      passive: true,
+    });
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   return (
     <div>
-      <div className={`modalBackground2 modalShowing2-${modalState}`}>
+      <div
+        ref={modalBg}
+        className={`modalBackground2 modalShowing2-${modalState}`}>
         <div className={'modalInner2'}>
           <MovieInfoPage
             ID={movieID}
@@ -120,11 +161,7 @@ function Welcomepage() {
           />
         </div>
       </div>
-      <div
-        class='pageDev'
-        style={{
-          minHeight: '800px',
-        }}>
+      <div class='pageDev'>
         <div class='set'>
           <div class='textprop'>Welcome</div>
           <TextField
@@ -136,21 +173,14 @@ function Welcomepage() {
             onChange={handleTextFieldChange}
           />
           <RouterLink to='/result'>
-            <a
-              style={{
-                position: 'absolute',
-                cursor: 'pointer',
-                fontSize: '35px',
-                // right: '13%',
-                textDecoration: 'none',
-              }}>
+            <a class='searchButton'>
               <MdSearch style={{ marginTop: '8px' }} />
             </a>
           </RouterLink>
         </div>
         <div class='scrollprop'>
           <Link
-            onClick={() => pauseScrollSnap()}
+            // onClick={() => pauseScrollSnap()}
             style={{ cursor: 'pointer' }}
             activeClass='active'
             to='trending'
@@ -179,9 +209,11 @@ function Welcomepage() {
               <Slider {...settings}>
                 {movies.map((movie) => (
                   <div
-                    // style={{ height: '700px' }}
                     onMouseEnter={() => changeBackground(movie)}
-                    onClick={() => toggleModalState(movie)}>
+                    onClick={() => {
+                      toggleModalState(movie);
+                      handleScroll();
+                    }}>
                     <img
                       src={
                         'https://image.tmdb.org/t/p/original/' +
@@ -220,12 +252,22 @@ function Welcomepage() {
                         e.target.src = image;
                       }}
                       alt='Poster'></img>
-                    <h3 style={{ top: '325px' }} class='img__description'>
-                      Vote Count: {movie.vote_count}
-                    </h3>
-                    <h3 class='img__description'>
-                      Rating: {movie.vote_average}
-                    </h3>
+                    {movie.vote_count == 0 ? (
+                      <h3 style={{ top: '325px' }} class='img__description'>
+                        Vote Count: N/A
+                      </h3>
+                    ) : (
+                      <h3 style={{ top: '325px' }} class='img__description'>
+                        Vote Count: {movie.vote_count}
+                      </h3>
+                    )}
+                    {movie.vote_average == 0 ? (
+                      <h3 class='img__description'>Rating: N/A</h3>
+                    ) : (
+                      <h3 class='img__description'>
+                        Rating: {movie.vote_average}
+                      </h3>
+                    )}
                     <h3>{movie.title}</h3>
                   </div>
                 ))}
@@ -235,6 +277,7 @@ function Welcomepage() {
         </section>
       </div>
       <div
+        id='footer'
         style={{
           height: '200px',
           backgroundColor: 'rgba(0, 0, 0, 0.7)',

@@ -14,17 +14,19 @@
   z-index: 9;
   margin-left: 55px;
   margin-right: 55px;
-  font-size: 1vw;
+  font-size: 18px;
+  padding: 25px;
 }
 .stats2 {
   font-family: 'Poppins', sans-serif;
   width: 400px;
-  height: 150px;
+  /* height: 150px; */
   background: rgba(0, 0, 0, 0.699);
   border-radius: 10px;
   margin-top: 40px;
   color: white;
   text-align: center;
   font-weight: normal;
-  font-size: 1vw;
+  font-size: 18px;
+  padding: 25px;
 }

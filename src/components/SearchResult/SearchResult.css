@@ -20,7 +20,7 @@
 }
 
 .img__description {
-  font-size: 1vw;
+  font-size: 18px;
   position: absolute;
   padding: 2%;
   height: 90%;
@@ -61,13 +61,11 @@ img.img-style:hover {
 }
 
 .img-style {
-  /* width: 200px; */
   height: 300px;
   border-radius: 10px;
 }
 
 .overall2 {
-  /* min-height: 100vh; */
   background-image: linear-gradient(
     rgba(241, 241, 241, 0.719),
     rgba(238, 182, 0, 0.699)

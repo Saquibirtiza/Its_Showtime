@@ -15,9 +15,9 @@ function DashBoard() {
   const [totalRuntime, setTotalRuntime] = React.useState(0);
   const [totalMovies, setTotalMovies] = React.useState(0);
   const [scrollPosition, setScrollPosition] = useState(0);
-
   const [pageLimit, setPageLimit] = useState(100);
   const [noData, setNoData] = useState(0);
+  const [releaseDate, setReleaseDate] = useState(0);
   const [noFinished, setNoFinished] = useState(0);
   const [nextUpcoming, setNextUpcoming] = useState('');
   const [nextUpcomingDays, setNextUpcomingDays] = useState(100000);
@@ -77,16 +77,30 @@ function DashBoard() {
     var bottom = document.getElementById('footer').getBoundingClientRect()
       .bottom;
 
-    if (bottom >= window.innerHeight) {
-      // console.log(bottom, window.innerHeight);
+    if (bottom > window.innerHeight) {
+      console.log(bottom, window.innerHeight);
       modalBg.current.style.top = `${position}px`;
       setScrollPosition(position);
+    } else {
+      window.scrollBy(0, -(window.innerHeight - bottom + 2));
+    }
+  };
+
+  const handleResize = () => {
+    const position = window.pageYOffset;
+    var bottom = document.getElementById('footer').getBoundingClientRect()
+      .bottom;
+    console.log(window.innerHeight);
+    if (bottom < window.innerHeight) {
+      window.scrollBy(0, -(window.innerHeight - bottom + 2));
+      setScrollPosition(window.innerHeight);
     }
   };
 
   useEffect(() => {
     if (modalState) {
       document.body.style.overflow = 'hidden';
+      modalBg.current.style.overflowY = 'scroll';
     } else {
       document.body.style.overflow = '';
     }
@@ -184,11 +198,15 @@ function DashBoard() {
 
   const toggleModalState = (movie) => {
     setMovieID(movie.MovieID);
+    setReleaseDate(movie.MovieRelease);
     setModalState(!modalState);
   };
 
   const handleMovieInfoToggle = () => {
     setModalState(!modalState);
+    setTimeout(function () {
+      handleResize();
+    }, 200);
   };
 
   return (
@@ -198,9 +216,18 @@ function DashBoard() {
         style={{ top: '0', height: '100%' }}
         className={`modalBackground2 modalShowing2-${modalState}`}>
         <div
-          style={{ height: '92%', transform: 'translate(0, 40px)' }}
+          style={{
+            height: '900px',
+            marginTop: '40px',
+            transform: 'translate(0, 0px)',
+            marginBottom: '20px',
+          }}
           className={'modalInner2'}>
-          <MovieInfoPage ID={movieID} handleChange={handleMovieInfoToggle} />
+          <MovieInfoPage
+            ID={movieID}
+            Release_date={releaseDate}
+            handleChange={handleMovieInfoToggle}
+          />
         </div>
       </div>
 
@@ -212,12 +239,7 @@ function DashBoard() {
         <h2>
           <div class='stats'>
             <div class='stats2'>
-              <div
-                style={{
-                  marginTop: '20px',
-                  // textDecoration: 'underline',
-                  marginBottom: '10px',
-                }}>
+              <div style={{ color: 'rgb(255, 230, 0)' }}>
                 Next Unreleased Movie In My List:
               </div>
               {nextUpcoming ? <div>{nextUpcoming}</div> : <div>None</div>}
@@ -227,25 +249,11 @@ function DashBoard() {
               ) : null}
             </div>
             <div class='stats2'>
-              <div
-                style={{
-                  marginTop: '40px',
-                  // textDecoration: 'underline',
-                  marginBottom: '12px',
-                }}>
-                Total Movie Time:
-              </div>
+              <div style={{ color: 'rgb(255, 230, 0)' }}>Total Movie Time:</div>
               <div>{totalRuntime}</div>
             </div>
             <div class='stats2'>
-              <div
-                style={{
-                  marginTop: '40px',
-                  // textDecoration: 'underline',
-                  marginBottom: '12px',
-                }}>
-                Movies Watched:
-              </div>
+              <div style={{ color: 'rgb(255, 230, 0)' }}>Movies Watched:</div>
               <div>{totalMovies}</div>
             </div>
           </div>
@@ -278,12 +286,22 @@ function DashBoard() {
                         e.target.src = image;
                       }}
                       alt='Poster'></img>
-                    <h3 style={{ top: '325px' }} class='img__description'>
-                      Vote Count: {movie.MovieRating}
-                    </h3>
-                    <h3 class='img__description'>
-                      Rating: {movie.MovieVoteCount}
-                    </h3>
+                    {movie.MovieRating == 0 ? (
+                      <h3 style={{ top: '325px' }} class='img__description'>
+                        Vote Count: N/A
+                      </h3>
+                    ) : (
+                      <h3 style={{ top: '325px' }} class='img__description'>
+                        Vote Count: {movie.MovieRating}
+                      </h3>
+                    )}
+                    {movie.MovieVoteCount == 0 ? (
+                      <h3 class='img__description'>Rating: N/A</h3>
+                    ) : (
+                      <h3 class='img__description'>
+                        Rating: {movie.MovieVoteCount}
+                      </h3>
+                    )}
                     <h3>{movie.MovieTitle}</h3>
                   </div>
                 );

@@ -42,6 +42,7 @@ function MovieInfoPage({ ID, Release_date, handleChange }) {
   const [castNum, setCastNum] = useState(1);
   const [suggestedNum, setSuggestedNum] = useState(1);
   const [width, setWidth] = useState();
+  const [checkDate, setCheckDate] = useState();
   const [signinToken, setSignin] = useState(false);
   const [modalState, setModalState] = useState(false);
   const [modalSigninState, setSigninModalState] = useState(false);
@@ -408,7 +409,7 @@ function MovieInfoPage({ ID, Release_date, handleChange }) {
           setRelatedMovies(res.results);
         });
     }
-    // console.log('opopopopopopo', ID);
+
     fire.auth().onAuthStateChanged(function (user) {
       if (user) {
         const docRef = fire
@@ -418,9 +419,8 @@ function MovieInfoPage({ ID, Release_date, handleChange }) {
           .collection('Movies');
         docRef.onSnapshot((data) => {
           var flag = 0;
-          // console.log('ghost ----------------');
+
           data.forEach((doc) => {
-            // console.log(doc.data().MovieID);
             if (doc.data().MovieID == ID) {
               flag = 1;
               setExistsInMylist(1);
@@ -498,6 +498,7 @@ function MovieInfoPage({ ID, Release_date, handleChange }) {
         ref={tab1}
         style={{
           display: 'flex',
+          flexWrap: 'wrap',
           height: '100%',
           position: 'absolute',
           left: '0',
@@ -508,15 +509,15 @@ function MovieInfoPage({ ID, Release_date, handleChange }) {
           <div class='genrestyle'>{movieGenre}</div>
           <div class='overview'>{movieDetails.overview}</div>
           <div style={{ display: 'flex', textDecoration: 'underline' }}>
-            <div class='moviestats'>Runtime</div>
+            <div class='anotherstats'>Runtime</div>
             <div class='moviestats'>Rating</div>
             <div class='anotherstats'>Release Date</div>
           </div>
           <div style={{ display: 'flex' }}>
             {movieDetails.runtime == 0 ? (
-              <div class='moviestats'>N/A</div>
+              <div class='anotherstats'>N/A</div>
             ) : (
-              <div class='moviestats'>{movieDetails.runtime} minutes</div>
+              <div class='anotherstats'>{movieDetails.runtime} minutes</div>
             )}
 
             {movieDetails.vote_average == 0 ? (
@@ -606,7 +607,7 @@ function MovieInfoPage({ ID, Release_date, handleChange }) {
           </div>
         </div>
 
-        <div style={{ flex: '2' }}></div>
+        <div style={{ flex: '2', minWidth: '500px' }}></div>
       </div>
       {/* ---------------------------------------------------------------Cast Tab--------------------------------------------------------------- */}
       <div
@@ -696,7 +697,7 @@ function MovieInfoPage({ ID, Release_date, handleChange }) {
       </div>
 
       <nav class='navposition'>
-        <ul class={'nav-links'}>
+        <ul class={'nav-links2'}>
           <li>
             <a style={{ cursor: 'pointer' }} onClick={() => switchTab(1)}>
               Overview

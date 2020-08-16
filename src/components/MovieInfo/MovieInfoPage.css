@@ -47,14 +47,15 @@
   flex-direction: column;
   flex: 1;
   height: 100%;
+  min-width: 450px;
   color: white;
   margin-left: 2.5vw;
+  margin-right: 2.5vw;
 }
 
 .title {
   font-family: 'Poppins', sans-serif;
   font-size: 2.5vw;
-  margin-left: 2vw;
   margin-top: 5vw;
   margin-bottom: 2vw;
 }
@@ -62,7 +63,7 @@
 .overview {
   font-family: 'Poppins', sans-serif;
   font-size: 0.8vw;
-  margin-left: 2vw;
+  /* margin-left: 2vw; */
   margin-top: 2vw;
   margin-bottom: 2vw;
 }
@@ -70,7 +71,6 @@
 .genrestyle {
   font-family: 'Poppins', sans-serif;
   font-size: 1.2vw;
-  margin-left: 2vw;
 }
 
 .moviestats {
@@ -117,4 +117,27 @@
   position: absolute;
   top: 50%;
   left: 50%;
+}
+
+.nav-links2 {
+  display: flex;
+  width: 30vw;
+  justify-content: space-around;
+}
+
+.nav-links2 li {
+  list-style: none;
+}
+
+.nav-links2 a {
+  color: rgb(226, 226, 226);
+  text-decoration: none;
+  letter-spacing: 3px;
+  font-size: 13px;
+}
+
+@media screen and (max-width: 1024px) {
+  .nav-links2 {
+    width: 60vw;
+  }
 }

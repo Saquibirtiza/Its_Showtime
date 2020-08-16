@@ -127,10 +127,22 @@ function SearchBar() {
                       e.target.src = image;
                     }}
                     alt='Poster'></img>
-                  <h3 style={{ top: '325px' }} class='img__description'>
-                    Vote Count: {movie.vote_count}
-                  </h3>
-                  <h3 class='img__description'>Rating: {movie.vote_average}</h3>
+                  {movie.vote_count == 0 ? (
+                    <h3 style={{ top: '325px' }} class='img__description'>
+                      Vote Count: N/A
+                    </h3>
+                  ) : (
+                    <h3 style={{ top: '325px' }} class='img__description'>
+                      Vote Count: {movie.vote_count}
+                    </h3>
+                  )}
+                  {movie.vote_average == 0 ? (
+                    <h3 class='img__description'>Rating: N/A</h3>
+                  ) : (
+                    <h3 class='img__description'>
+                      Rating: {movie.vote_average}
+                    </h3>
+                  )}
                   <h3>{movie.original_title}</h3>
                 </div>
               ))}
