@@ -198,7 +198,7 @@ function Welcomepage() {
             spy={true}
             smooth={true}
             duration={500}>
-            <p>Scroll down</p>
+            <p class='pStyle'>Scroll down</p>
           </Link>
         </div>
       </div>

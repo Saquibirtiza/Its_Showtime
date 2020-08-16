@@ -9,6 +9,7 @@ import Signin from './Signin';
 import Signup from './Signup';
 import { Link as RouterLink } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
+import { Redirect } from 'react-router';
 
 // import Avatar from '@material-ui/core/Avatar';
 // import Button from '@material-ui/core/Button';
@@ -49,6 +50,7 @@ function Navigationbar() {
   const searchBarRef = React.useRef();
   const listRef = React.useRef();
   const [modalState, setModalState] = useState(false);
+  const [isSignedUp, setIsSignedUp] = useState(0);
   const [modalSigninState, setSigninModalState] = useState(false);
   const [closeOrSearch, setcloseOrSearch] = useState(true);
   let location = useLocation();
@@ -115,6 +117,7 @@ function Navigationbar() {
 
   return (
     <div>
+      {isSignedUp == 1 ? <Redirect to='/loading' /> : null}
       <link
         href='https://fonts.googleapis.com/css2?family=Poppins&display=swap'
         rel='stylesheet'></link>
@@ -128,7 +131,10 @@ function Navigationbar() {
         <div className={`modalBackground modalShowing-${modalState}`}>
           <div className={'modalInner'}>
             <Signup
-              handleExit={() => toggleModalState()}
+              handleExit={() => {
+                toggleModalState();
+                setIsSignedUp(1);
+              }}
               handleSwitch={() => {
                 toggleModalState();
                 toggleSigninModalState();

@@ -61,7 +61,7 @@ body {
   min-height: '900px';
 }
 
-p {
+.pStyle {
   text-transform: uppercase;
   font-size: 2em;
   overflow: hidden;
