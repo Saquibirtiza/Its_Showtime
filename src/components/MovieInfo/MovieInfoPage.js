@@ -701,25 +701,29 @@ function MovieInfoPage({ ID, Release_date, handleChange }) {
       <nav class='navposition'>
         <ul class={'nav-links2'}>
           <li>
-            <a
-              style={{ cursor: 'pointer', padding: '2px' }}
+            <div
+              style={{ cursor: 'pointer', padding: '2px', color: 'white' }}
               onClick={() => switchTab(1)}>
               Overview
-            </a>
+            </div>
           </li>
           <li>
-            <a
-              style={{ cursor: 'pointer', color: 'yellow', padding: '2px' }}
+            <div
+              style={{
+                cursor: 'pointer',
+                padding: '2px',
+                color: 'white',
+              }}
               onClick={() => switchTab(2)}>
               Cast
-            </a>
+            </div>
           </li>
           <li>
-            <a
-              style={{ cursor: 'pointer', padding: '2px' }}
+            <div
+              style={{ cursor: 'pointer', padding: '2px', color: 'white' }}
               onClick={() => switchTab(3)}>
               Suggestions
-            </a>
+            </div>
           </li>
         </ul>
       </nav>

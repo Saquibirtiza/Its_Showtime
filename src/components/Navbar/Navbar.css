@@ -56,6 +56,9 @@ nav {
 
 .nav-links li {
   list-style: none;
+  color: white;
+  font-size: 13px;
+  letter-spacing: 3px;
 }
 
 .nav-links a {
@@ -110,7 +113,11 @@ nav {
     display: block;
   }
   .iconstyle {
+    cursor: pointer;
+    font-size: 22px;
+    color: #fff;
     margin-top: 5px;
+    margin-right: 30px;
   }
 }
 

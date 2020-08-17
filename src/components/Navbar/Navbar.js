@@ -131,9 +131,11 @@ function Navigationbar() {
         <div className={`modalBackground modalShowing-${modalState}`}>
           <div className={'modalInner'}>
             <Signup
-              handleExit={() => {
+              handleExit={(val) => {
                 toggleModalState();
-                setIsSignedUp(1);
+                if (val == 1) {
+                  setIsSignedUp(1);
+                }
               }}
               handleSwitch={() => {
                 toggleModalState();
@@ -159,25 +161,23 @@ function Navigationbar() {
         <div style={{ display: 'flex', flexDirection: 'row' }}>
           <div>
             {closeOrSearch ? (
-              <a
+              <div
                 style={{
                   cursor: 'pointer',
                   fontSize: '22px',
                   color: '#FFF',
-                  padding: '20px',
                 }}>
                 <MdSearch class='iconstyle' onClick={() => toggleSearchBar()} />
-              </a>
+              </div>
             ) : (
-              <a
+              <div
                 style={{
                   cursor: 'pointer',
                   fontSize: '20px',
                   color: '#FFF',
-                  padding: '20px',
                 }}>
                 <MdClose class='iconstyle' onClick={() => toggleSearchBar()} />
-              </a>
+              </div>
             )}
           </div>
           <div>
@@ -207,18 +207,18 @@ function Navigationbar() {
                 )}
               </li>
               <li>
-                <a
+                <div
                   style={{ cursor: 'pointer' }}
                   onClick={() => toggleSigninModalState()}>
                   Signin
-                </a>
+                </div>
               </li>
               <li>
-                <a
+                <div
                   style={{ cursor: 'pointer' }}
                   onClick={() => toggleModalState()}>
                   Get Started
-                </a>
+                </div>
               </li>
             </ul>
           </div>

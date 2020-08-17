@@ -35,6 +35,7 @@ const useStyles = makeStyles((theme) => ({
 
 function Signup({ handleExit, handleSwitch }) {
   const classes = useStyles();
+  const errorMsg = React.useRef();
   const { register, handleSubmit, errors, reset, clearErrors } = useForm();
   const {
     register: registerSignin,
@@ -44,8 +45,8 @@ function Signup({ handleExit, handleSwitch }) {
     clearErrors: clearErrorsSignin,
   } = useForm();
 
-  const callbackExit = () => {
-    handleExit();
+  const callbackExit = (val) => {
+    handleExit(val);
   };
   const callbackSwitch = () => {
     handleSwitch();
@@ -59,10 +60,17 @@ function Signup({ handleExit, handleSwitch }) {
       .then((u) => {
         localStorage.setItem('loggedIn', 1);
         document.body.style.overflow = '';
-        callbackExit();
+        callbackExit(1);
         console.log('success');
       })
       .catch((error) => {
+        errorMsg.current.style.opacity = 1;
+        errorMsg.current.style.position = 'static';
+        setTimeout(function () {
+          errorMsg.current.style.opacity = 0;
+          errorMsg.current.style.position = 'absolute';
+        }, 2000);
+        console.log(error);
         console.log(error);
       });
     e.target.reset();
@@ -79,6 +87,11 @@ function Signup({ handleExit, handleSwitch }) {
           <Typography component='h1' variant='h5'>
             Sign up
           </Typography>
+          <h3
+            ref={errorMsg}
+            style={{ opacity: 0, padding: '10px', position: 'absolute' }}>
+            Please Enter A Proper Email Address
+          </h3>
           <form
             className={classes.form}
             noValidate

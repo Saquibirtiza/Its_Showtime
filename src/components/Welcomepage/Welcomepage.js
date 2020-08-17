@@ -6,13 +6,10 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { MovieContext } from '../Movielist/MovieListContext';
 import MovieInfoPage from '../MovieInfo/MovieInfoPage';
-// import { Link as LinkRouter } from 'react-router-dom';
 import TextField from '@material-ui/core/TextField';
 import image from '../../ss.png';
 import { MdSearch, MdSignalWifi1BarLock } from 'react-icons/md';
 import { Link as RouterLink } from 'react-router-dom';
-import { MuiThemeProvider } from '@material-ui/core';
-import { createMuiTheme } from '@material-ui/core/styles';
 
 function Welcomepage() {
   const [modalState, setModalState] = useState(false);
@@ -36,13 +33,6 @@ function Welcomepage() {
   const handleMovieInfoToggle = () => {
     setModalState(!modalState);
   };
-
-  // const pauseScrollSnap = () => {
-  //   document.documentElement.style.scrollSnapType = 'none';
-  //   setTimeout(function () {
-  //     document.documentElement.style.scrollSnapType = 'y mandatory';
-  //   }, 500);
-  // };
 
   const toggleModalState = (movie) => {
     setMovieID(movie.id);
@@ -184,9 +174,9 @@ function Welcomepage() {
           />
 
           <RouterLink to='/result'>
-            <a class='searchButton'>
+            <div class='searchButton'>
               <MdSearch style={{ marginTop: '8px' }} />
-            </a>
+            </div>
           </RouterLink>
         </div>
         <div class='scrollprop'>

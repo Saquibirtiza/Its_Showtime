@@ -66,7 +66,11 @@ function SearchBar({ handleExit }) {
         right: '0',
         zIndex: '8',
       }}>
-      <form className={classes.root} noValidate autoComplete='off'>
+      <form
+        className={classes.root}
+        noValidate
+        autoComplete='off'
+        style={{ position: 'relative' }}>
         <TextField
           className={classes.multilineColor}
           InputProps={{
@@ -85,22 +89,27 @@ function SearchBar({ handleExit }) {
         />
         <RouterLink
           to='/result'
+          style={{
+            position: 'absolute',
+
+            top: 0,
+            bottom: 0,
+            right: '12vw',
+          }}
           onClick={() => {
             if (handleExit) handleExit();
             console.log(localStorage.getItem('searchVal'));
           }}>
-          <a
+          <div
             style={{
-              position: 'absolute',
               cursor: 'pointer',
               fontSize: '35px',
-              right: '13%',
               zIndex: '9',
               color: '#FFF',
               textDecoration: 'none',
             }}>
-            <MdSearch style={{ marginTop: '8px' }} />
-          </a>
+            <MdSearch />
+          </div>
         </RouterLink>
       </form>
       {movie.map((movie) => (

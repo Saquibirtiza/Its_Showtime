@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './Navbar.css';
 import { Link } from 'react-scroll';
-import { useForm } from 'react-hook-form';
 import { MdSearch } from 'react-icons/md';
 import SearchBar from '../Welcomepage/SearchBar';
 import { Link as RouterLink } from 'react-router-dom';
@@ -14,8 +13,8 @@ function Navigationbar() {
   const burgerRef = React.useRef();
   const searchBarRef = React.useRef();
   const listRef = React.useRef();
-  const [modalState, setModalState] = useState(false);
-  const [modalSigninState, setSigninModalState] = useState(false);
+  // const [modalState, setModalState] = useState(false);
+  // const [modalSigninState, setSigninModalState] = useState(false);
   const [isSignedIn, setIsSignedIn] = useState(true);
   const [closeOrSearch, setcloseOrSearch] = useState(true);
   const location = useLocation();
@@ -75,25 +74,23 @@ function Navigationbar() {
         <div style={{ display: 'flex', flexDirection: 'row' }}>
           <div>
             {closeOrSearch ? (
-              <a
+              <div
                 style={{
                   cursor: 'pointer',
                   fontSize: '22px',
                   color: '#FFF',
-                  padding: '20px',
                 }}>
                 <MdSearch class='iconstyle' onClick={() => toggleSearchBar()} />
-              </a>
+              </div>
             ) : (
-              <a
+              <div
                 style={{
                   cursor: 'pointer',
                   fontSize: '20px',
                   color: '#FFF',
-                  padding: '10px',
                 }}>
-                <MdClose onClick={() => toggleSearchBar()} />
-              </a>
+                <MdClose class='iconstyle' onClick={() => toggleSearchBar()} />
+              </div>
             )}
           </div>
           <div>
@@ -124,7 +121,7 @@ function Navigationbar() {
               </li>
               <li>
                 <RouterLink to='/dashboard'>
-                  <a style={{ cursor: 'pointer' }}>Dashboard</a>
+                  <div style={{ cursor: 'pointer' }}>Dashboard</div>
                 </RouterLink>
               </li>
               <li>
@@ -135,7 +132,7 @@ function Navigationbar() {
                     localStorage.setItem('loggedIn', 0);
                     localStorage.setItem('searchVal', '');
                   }}>
-                  <a style={{ cursor: 'pointer' }}>Signout</a>
+                  <div style={{ cursor: 'pointer' }}>Signout</div>
                 </RouterLink>
               </li>
             </ul>
