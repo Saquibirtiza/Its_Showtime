@@ -13,8 +13,6 @@ function Navigationbar() {
   const burgerRef = React.useRef();
   const searchBarRef = React.useRef();
   const listRef = React.useRef();
-  // const [modalState, setModalState] = useState(false);
-  // const [modalSigninState, setSigninModalState] = useState(false);
   const [isSignedIn, setIsSignedIn] = useState(true);
   const [closeOrSearch, setcloseOrSearch] = useState(true);
   const location = useLocation();

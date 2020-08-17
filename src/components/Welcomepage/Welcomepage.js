@@ -80,7 +80,6 @@ function Welcomepage() {
   }
 
   const changeBackground = (prop) => {
-    // console.log(infoRef.current);
     bgRef.current.style.backgroundImage =
       'url(' +
       'https://image.tmdb.org/t/p/original/' +
@@ -181,7 +180,6 @@ function Welcomepage() {
         </div>
         <div class='scrollprop'>
           <Link
-            // onClick={() => pauseScrollSnap()}
             style={{ cursor: 'pointer' }}
             activeClass='active'
             to='trending'

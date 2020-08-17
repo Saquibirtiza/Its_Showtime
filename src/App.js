@@ -8,13 +8,7 @@ import Result from './components/SearchResult/SearchResult';
 import DashBoard from './components/DashBoard/DashBoard';
 import LoadingScreen from './components/Loadingscreen/LoadingScreen';
 import fire from './config/fbConfig';
-import {
-  BrowserRouter as Router,
-  Redirect,
-  Switch,
-  Route,
-} from 'react-router-dom';
-// import 'bootstrap/dist/css/bootstrap.min.css';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -81,10 +75,8 @@ function App() {
                     return (
                       <MovieProvider>
                         {localStorage.getItem('loggedIn') ? (
-                          // <section>
                           <NavbarSignedIn />
                         ) : (
-                          // </section>
                           <Navbar />
                         )}
                         <DashBoard />

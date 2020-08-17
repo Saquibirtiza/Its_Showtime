@@ -134,7 +134,6 @@ function Signin({ handleExit, handleSwitch }) {
               <Button
                 style={{ flex: '3' }}
                 type='submit'
-                // fullWidth
                 variant='contained'
                 color='primary'
                 className={classes.submit}>
@@ -148,7 +147,6 @@ function Signin({ handleExit, handleSwitch }) {
                   clearErrorsSignin();
                   resetSignin();
                 }}
-                // fullWidth
                 variant='contained'
                 color='primary'
                 className={classes.submit}>

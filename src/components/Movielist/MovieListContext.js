@@ -1,6 +1,4 @@
 import React, { useState, createContext, useEffect } from 'react';
-import { propTypes } from 'react-bootstrap/esm/Image';
-
 export const MovieContext = createContext();
 
 export const MovieProvider = (props) => {

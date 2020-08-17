@@ -100,7 +100,6 @@ function MovieInfoPage({ ID, Release_date, handleChange }) {
     poster,
     release_date
   ) => {
-    // console.log('yeeeeee', id);
     fire.auth().onAuthStateChanged(function (user) {
       if (user) {
         const docRef = fire
@@ -199,16 +198,6 @@ function MovieInfoPage({ ID, Release_date, handleChange }) {
           anotherDocRef.update({
             MovieCompleted: 0,
           });
-          // anotherDocRef.get().then((data) => {
-          //   console.log('parfyyyyyyyyyyyyyyy');
-          //   data.forEach((doc) => {
-          //     console.log('kamla');
-          //     if (doc.data().MovieID == id) {
-          //       // doc.ref.update({ MovieCompleted: 0 });
-          //       console.log('Updated');
-          //     }
-          //   });
-          // });
         }
       } else {
         console.log('Not signed in');
@@ -549,7 +538,6 @@ function MovieInfoPage({ ID, Release_date, handleChange }) {
                         movieDetails.release_date
                       )
                     }
-                    // style={{ flex: '1' }}
                     type='button'
                     variant='contained'
                     color='primary'
@@ -560,7 +548,6 @@ function MovieInfoPage({ ID, Release_date, handleChange }) {
                   <Button
                     onClick={() => removeMylist(movieDetails.id)}
                     ref={removeButton}
-                    // style={{ flex: '1' }}
                     type='button'
                     variant='contained'
                     color='primary'
@@ -596,7 +583,6 @@ function MovieInfoPage({ ID, Release_date, handleChange }) {
                       }
                     }}
                     ref={removeButton}
-                    // disabled
                     type='button'
                     variant='contained'
                     color='primary'

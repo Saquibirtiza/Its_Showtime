@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-// import Welcome from 'react-welcome-page';
 import { Redirect } from 'react-router';
 import image from './film.svg';
 import './LoadingScreen.css';
