@@ -34,6 +34,7 @@ nav {
   width: 90%;
   margin: auto;
   max-width: 500px;
+  margin-bottom: 200px;
   transform: translate(0, 200px);
 }
 

@@ -15,6 +15,8 @@ function Navigationbar() {
   const burgerRef = React.useRef();
   const searchBarRef = React.useRef();
   const listRef = React.useRef();
+  const modalBg = React.useRef();
+  const modalBgSignin = React.useRef();
   const [modalState, setModalState] = useState(false);
   const [isSignedUp, setIsSignedUp] = useState(0);
   const [modalSigninState, setSigninModalState] = useState(false);
@@ -27,6 +29,7 @@ function Navigationbar() {
         document.body.style.overflow = '';
       } else {
         document.body.style.overflow = 'hidden';
+        modalBg.current.style.overflowY = 'scroll';
       }
     }
 
@@ -48,6 +51,7 @@ function Navigationbar() {
         document.body.style.overflow = '';
       } else {
         document.body.style.overflow = 'hidden';
+        modalBgSignin.current.style.overflowY = 'scroll';
       }
     }
     setSigninModalState(!modalSigninState);
@@ -85,7 +89,9 @@ function Navigationbar() {
           </RouterLink>
         </div>
 
-        <div className={`modalBackground modalShowing-${modalState}`}>
+        <div
+          ref={modalBg}
+          className={`modalBackground modalShowing-${modalState}`}>
           <div className={'modalInner'}>
             <Signup
               handleExit={(val) => {
@@ -102,7 +108,9 @@ function Navigationbar() {
           </div>
         </div>
 
-        <div className={`modalBackground modalShowing-${modalSigninState}`}>
+        <div
+          ref={modalBgSignin}
+          className={`modalBackground modalShowing-${modalSigninState}`}>
           <div className={'modalInner'}>
             <Signin
               handleExit={() => toggleSigninModalState()}
