@@ -36,6 +36,7 @@ const useStyles = makeStyles((theme) => ({
 function Signin({ handleExit, handleSwitch }) {
   const classes = useStyles();
   const errorMsg = React.useRef();
+  const [messageError, sestMessageError] = useState('');
   const { register, handleSubmit, errors, reset, clearErrors } = useForm();
   const {
     register: registerSignin,
@@ -58,6 +59,7 @@ function Signin({ handleExit, handleSwitch }) {
         console.log('Signin success');
       })
       .catch((error) => {
+        sestMessageError(error.message);
         errorMsg.current.style.opacity = 1;
         errorMsg.current.style.position = 'static';
         setTimeout(function () {
@@ -90,7 +92,7 @@ function Signin({ handleExit, handleSwitch }) {
           <h3
             ref={errorMsg}
             style={{ opacity: 0, padding: '10px', position: 'absolute' }}>
-            Incorrect Email and Password
+            {messageError}
           </h3>
           <form
             className={classes.form}

@@ -100,7 +100,6 @@ function Welcomepage() {
       .bottom;
 
     if (bottom > window.innerHeight) {
-      console.log(bottom, window.innerHeight);
       modalBg.current.style.top = `${position}px`;
       setScrollPosition(position);
     } else {

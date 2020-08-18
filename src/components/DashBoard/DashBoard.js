@@ -78,7 +78,7 @@ function DashBoard() {
       .bottom;
 
     if (bottom > window.innerHeight) {
-      console.log(bottom, window.innerHeight);
+      // console.log(bottom, window.innerHeight);
       modalBg.current.style.top = `${position}px`;
       setScrollPosition(position);
     } else {
@@ -126,6 +126,7 @@ function DashBoard() {
     handleScroll();
     fire.auth().onAuthStateChanged(function (user) {
       if (user) {
+        setMovie([]);
         const docRef = fire
           .firestore()
           .collection('Users')

@@ -9,7 +9,8 @@ import 'slick-carousel/slick/slick-theme.css';
 import fire from '../../config/fbConfig';
 import Signin from '../Navbar/Signin';
 import Signup from '../Navbar/Signup';
-import Spinner from 'react-bootstrap/Spinner';
+import { Redirect } from 'react-router';
+
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -45,6 +46,7 @@ function MovieInfoPage({ ID, Release_date, handleChange }) {
   const [checkDate, setCheckDate] = useState();
   const [signinToken, setSignin] = useState(false);
   const [modalState, setModalState] = useState(false);
+  const [isSignedUp, setIsSignedUp] = useState(0);
   const [modalSigninState, setSigninModalState] = useState(false);
   const bgRef = React.useRef();
   const tab1 = React.useRef();
@@ -100,76 +102,75 @@ function MovieInfoPage({ ID, Release_date, handleChange }) {
     poster,
     release_date
   ) => {
-    fire.auth().onAuthStateChanged(function (user) {
-      if (user) {
-        const docRef = fire
-          .firestore()
-          .collection('Users')
-          .doc(`${user.uid}`)
-          .collection('Movies')
-          .doc(`${id}`);
-        if (Release_date) {
-          docRef
-            .set({
-              MovieID: id,
-              MovieTitle: title,
-              MovieRating: rating,
-              MovieVoteCount: vote_count,
-              MoviePoster: poster,
-              MovieCompleted: completedToken,
-              MovieRelease: Release_date,
-            })
-            .then(function () {
-              console.log('Added');
-            })
-            .catch(function (error) {
-              console.log(error);
-            });
-        } else {
-          docRef
-            .set({
-              MovieID: id,
-              MovieTitle: title,
-              MovieRating: rating,
-              MovieVoteCount: vote_count,
-              MoviePoster: poster,
-              MovieCompleted: completedToken,
-              MovieRelease: release_date,
-            })
-            .then(function () {
-              console.log('Added');
-            })
-            .catch(function (error) {
-              console.log(error);
-            });
-        }
+    var user = fire.auth().currentUser;
+    if (user) {
+      const docRef = fire
+        .firestore()
+        .collection('Users')
+        .doc(`${user.uid}`)
+        .collection('Movies')
+        .doc(`${id}`);
+      if (Release_date) {
+        docRef
+          .set({
+            MovieID: id,
+            MovieTitle: title,
+            MovieRating: rating,
+            MovieVoteCount: vote_count,
+            MoviePoster: poster,
+            MovieCompleted: completedToken,
+            MovieRelease: Release_date,
+          })
+          .then(function () {
+            console.log('Added');
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
       } else {
-        setSignin(true);
-        toggleSigninModalState();
+        docRef
+          .set({
+            MovieID: id,
+            MovieTitle: title,
+            MovieRating: rating,
+            MovieVoteCount: vote_count,
+            MoviePoster: poster,
+            MovieCompleted: completedToken,
+            MovieRelease: release_date,
+          })
+          .then(function () {
+            console.log('Added');
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
       }
-    });
+    } else {
+      setSignin(true);
+      toggleSigninModalState();
+    }
   };
 
   const removeMylist = (id) => {
-    fire.auth().onAuthStateChanged(function (user) {
-      if (user) {
-        const docRef = fire
-          .firestore()
-          .collection('Users')
-          .doc(`${user.uid}`)
-          .collection('Movies');
-        docRef.get().then((data) => {
-          data.forEach((doc) => {
-            if (doc.data().MovieID == id) {
-              doc.ref.delete();
-              console.log('Deleted');
-            }
-          });
+    var user = fire.auth().currentUser;
+    if (user) {
+      const docRef = fire
+        .firestore()
+        .collection('Users')
+        .doc(`${user.uid}`)
+        .collection('Movies');
+      docRef.get().then((data) => {
+        data.forEach((doc) => {
+          console.log(id);
+          if (doc.data().MovieID == id) {
+            doc.ref.delete();
+            console.log('Deleted');
+          }
         });
-      } else {
-        console.log('Not signed in');
-      }
-    });
+      });
+    } else {
+      console.log('Not signed in');
+    }
   };
 
   const removeWatched = (id) => {
@@ -455,13 +456,17 @@ function MovieInfoPage({ ID, Release_date, handleChange }) {
 
   return (
     <div ref={bgRef}>
+      {isSignedUp == 1 ? <Redirect to='/loading' /> : null}
       {signinToken ? (
         <div>
           <div className={`modalBackground modalShowing-${modalState}`}>
             <div className={'modalInner'}>
               <Signup
-                handleExit={() => {
+                handleExit={(val) => {
                   toggleModalState();
+                  if (val == 1) {
+                    setIsSignedUp(1);
+                  }
                 }}
                 handleSwitch={() => {
                   toggleModalState();
