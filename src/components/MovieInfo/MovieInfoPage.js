@@ -57,41 +57,40 @@ function MovieInfoPage({ ID, Release_date, handleChange }) {
   const spinnerRef = React.useRef();
 
   const handleWatched = (id, runtime) => {
-    fire.auth().onAuthStateChanged(function (user) {
-      if (user) {
-        const docRef = fire
-          .firestore()
-          .collection('Users')
-          .doc(`${user.uid}`)
-          .collection('Watched')
-          .doc(`${id}`);
-        docRef
-          .set({
-            WatchedID: id,
-            WatchedRuntime: runtime,
-          })
-          .then(function () {
-            console.log('Watched List Added');
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
-        const anotherDocRef = fire
-          .firestore()
-          .collection('Users')
-          .doc(`${user.uid}`)
-          .collection('Movies')
-          .doc(`${id}`);
-        if (anotherDocRef) {
-          anotherDocRef.update({
-            MovieCompleted: '1',
-          });
-        }
-      } else {
-        setSignin(true);
-        toggleSigninModalState();
+    var user = fire.auth().currentUser;
+    if (user) {
+      const docRef = fire
+        .firestore()
+        .collection('Users')
+        .doc(`${user.uid}`)
+        .collection('Watched')
+        .doc(`${id}`);
+      docRef
+        .set({
+          WatchedID: id,
+          WatchedRuntime: runtime,
+        })
+        .then(function () {
+          console.log('Watched List Added');
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+      const anotherDocRef = fire
+        .firestore()
+        .collection('Users')
+        .doc(`${user.uid}`)
+        .collection('Movies')
+        .doc(`${id}`);
+      if (anotherDocRef) {
+        anotherDocRef.update({
+          MovieCompleted: '1',
+        });
       }
-    });
+    } else {
+      setSignin(true);
+      toggleSigninModalState();
+    }
   };
 
   const handleSubmit = (
@@ -174,36 +173,35 @@ function MovieInfoPage({ ID, Release_date, handleChange }) {
   };
 
   const removeWatched = (id) => {
-    fire.auth().onAuthStateChanged(function (user) {
-      if (user) {
-        const docRef = fire
-          .firestore()
-          .collection('Users')
-          .doc(`${user.uid}`)
-          .collection('Watched');
-        docRef.get().then((data) => {
-          data.forEach((doc) => {
-            if (doc.data().WatchedID == id) {
-              doc.ref.delete();
-              console.log('Deleted');
-            }
-          });
+    var user = fire.auth().currentUser;
+    if (user) {
+      const docRef = fire
+        .firestore()
+        .collection('Users')
+        .doc(`${user.uid}`)
+        .collection('Watched');
+      docRef.get().then((data) => {
+        data.forEach((doc) => {
+          if (doc.data().WatchedID == id) {
+            doc.ref.delete();
+            console.log('Deleted');
+          }
         });
-        const anotherDocRef = fire
-          .firestore()
-          .collection('Users')
-          .doc(`${user.uid}`)
-          .collection('Movies')
-          .doc(`${id}`);
-        if (anotherDocRef) {
-          anotherDocRef.update({
-            MovieCompleted: 0,
-          });
-        }
-      } else {
-        console.log('Not signed in');
+      });
+      const anotherDocRef = fire
+        .firestore()
+        .collection('Users')
+        .doc(`${user.uid}`)
+        .collection('Movies')
+        .doc(`${id}`);
+      if (anotherDocRef) {
+        anotherDocRef.update({
+          MovieCompleted: 0,
+        });
       }
-    });
+    } else {
+      console.log('Not signed in');
+    }
   };
 
   useEffect(() => {
@@ -330,29 +328,28 @@ function MovieInfoPage({ ID, Release_date, handleChange }) {
     if (ID !== false) {
       if (movieID) ID = movieID;
 
-      fire.auth().onAuthStateChanged(function (user) {
-        if (user) {
-          const docRef = fire
-            .firestore()
-            .collection('Users')
-            .doc(`${user.uid}`)
-            .collection('Watched');
-          docRef.onSnapshot((data) => {
-            var flag = 0;
-            data.forEach((doc) => {
-              if (doc.data().WatchedID == ID) {
-                flag = 1;
-                setCompletedToken(1);
-              }
-            });
-            if (flag == 0) {
-              setCompletedToken(0);
+      var user = fire.auth().currentUser;
+      if (user) {
+        const docRef = fire
+          .firestore()
+          .collection('Users')
+          .doc(`${user.uid}`)
+          .collection('Watched');
+        docRef.onSnapshot((data) => {
+          var flag = 0;
+          data.forEach((doc) => {
+            if (doc.data().WatchedID == ID) {
+              flag = 1;
+              setCompletedToken(1);
             }
           });
-        } else {
-          console.log('Not signed in');
-        }
-      });
+          if (flag == 0) {
+            setCompletedToken(0);
+          }
+        });
+      } else {
+        console.log('Not signed in');
+      }
 
       fetch(
         `https://api.themoviedb.org/3/movie/${ID}?api_key=${process.env.REACT_APP_TMDB_API_KEY}&language=en-US`
@@ -405,28 +402,27 @@ function MovieInfoPage({ ID, Release_date, handleChange }) {
         });
     }
 
-    fire.auth().onAuthStateChanged(function (user) {
-      if (user) {
-        const docRef = fire
-          .firestore()
-          .collection('Users')
-          .doc(`${user.uid}`)
-          .collection('Movies');
-        docRef.onSnapshot((data) => {
-          var flag = 0;
+    var user = fire.auth().currentUser;
+    if (user) {
+      const docRef = fire
+        .firestore()
+        .collection('Users')
+        .doc(`${user.uid}`)
+        .collection('Movies');
+      docRef.onSnapshot((data) => {
+        var flag = 0;
 
-          data.forEach((doc) => {
-            if (doc.data().MovieID == ID) {
-              flag = 1;
-              setExistsInMylist(1);
-            }
-          });
-          if (flag == 0) {
-            setExistsInMylist(0);
+        data.forEach((doc) => {
+          if (doc.data().MovieID == ID) {
+            flag = 1;
+            setExistsInMylist(1);
           }
         });
-      }
-    });
+        if (flag == 0) {
+          setExistsInMylist(0);
+        }
+      });
+    }
   }, [ID, movieID]);
 
   useEffect(() => {
